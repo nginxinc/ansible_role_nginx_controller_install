@@ -1,0 +1,62 @@
+- name: Fail if required variables are not defined
+  assert:
+    that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
+  with_items:
+    - ctrl_tarball_src
+    - ctrl_install_path
+    - remote_src
+    - db_host
+    - db_port
+    - db_user
+    - db_password
+    - tsdb_volume_type
+    - smtp_server
+    - smtp_port
+    - smtp_authentication
+    - smtp_use_tls
+    - noreply_address
+    - fqdn
+    - organization_name
+    - admin_firstname
+    - admin_lastname
+    - admin_email
+    - admin_password
+
+- name: "Controller - Extracting"
+  unarchive:
+    src: "{{ ctrl_tarball_src }}"
+    dest: "{{ ctrl_install_path }}"
+    creates: "{{ ctrl_install_path }}/controller-installer"
+    remote_src: "{{ remote_src }}"
+
+- name: "Controller - Installing"
+  shell: |
+    ./install.sh \
+      --accept-license \
+      --database-host '{{ db_host }}' \
+      --database-port '{{ db_port }}' \
+      --database-user '{{ db_user }}' \
+      --database-password '{{ db_password }}' \
+      --tsdb-volume-type '{{ tsdb_volume_type }}' \
+      --smtp-host '{{ smtp_host }}' \
+      --smtp-port '{{ smtp_port }}' \
+      --smtp-authentication '{{ smtp_authentication }}' \
+      --smtp-use-tls '{{ smtp_use_tls }}' \
+      --noreply-address '{{ noreply_address }}' \
+      --fqdn '{{ fqdn }}' \
+      --organization-name '{{ organization_name }}' \
+      --admin-firstname '{{ admin_firstname }}' \
+      --admin-lastname '{{ admin_lastname }}' \
+      --admin-email '{{ admin_email }}' \
+      --admin-password '{{ admin_password }}' \
+      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-path {{ tsdb_nfs_path }}','') }} \
+      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-host {{ tsdb_nfs_host }}','') }} \
+      {{ (smtp_authentication == "true") | ternary('--smtp-user {{ smtp_user }}','') }} \
+      {{ (smtp_authentication == "true") | ternary('--smtp-password {{ smtp_password }}','') }} \
+      {{ (self_signed_cert) | ternary('--self-signed-cert','') }} \
+      {{ (overwrite_existing_configs) | ternary('--overwrite-existing-configs','') }} \
+      {{ (auto_install_docker) | ternary('--auto-install-docker','') }}
+  args:
+    chdir: "{{ ctrl_install_path }}/controller-installer"
+    creates: /opt/nginx-controller/k8s-namespace.yaml
+

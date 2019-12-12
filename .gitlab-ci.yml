@@ -1,0 +1,12 @@
+stages:
+  - linting
+
+lint:
+  stage: linting
+  image: python:3.7.4-stretch
+  tags:
+    - blue-devops-runner
+  script:
+    - pip install ansible-lint
+    - cp tests/{inventory,test.yml} ./
+    - ansible-lint .

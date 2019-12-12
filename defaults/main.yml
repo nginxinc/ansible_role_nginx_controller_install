@@ -1,0 +1,11 @@
+---
+# defaults file for ansible-controller
+
+# optional vars must default to empty
+tsdb_nfs_path: ""
+tsdb_nfs_host: ""
+smtp_user: ""
+smtp_password: ""
+self_signed_cert: ""
+overwrite_existing_configs: ""
+auto_install_docker: ""

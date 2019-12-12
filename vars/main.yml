@@ -1,0 +1,65 @@
+---
+# vars file for ansible-controller
+
+# Required. Source path to the local Controller tarball file.
+ctrl_tarball_src: ""
+# Required. The path where the tarball will be extracted to on the remote
+ctrl_install_path: ""
+# Optional. If the tarball is already present on the remote host.
+remote_src: yes
+
+# Controller installation parameters
+
+# Required. Database host
+db_host: ""
+# Required. Database port
+db_port: "5432"
+# Required. Database user
+db_user: ""
+# Required. Database password
+db_password: ""
+
+# Required. Time series database volume type (local, nfs)
+tsdb_volume_type: "local"
+# Optional. Time series database NFS path (only if tsdb_volume_type is 'nfs')
+tsdb_nfs_path: ""
+# Optional. Time series database NFS host (only if tsdb_volume_type is 'nfs')
+tsdb_nfs_host: ""
+
+# Required. SMTP Host
+smtp_host: ""
+# Required. SMTP Port
+smtp_port: "25"
+# Required. Specify if SMTP needs auth (user and pass)
+smtp_authentication: false
+# Optional. SMTP user (only if smtp_authentication is true)
+smtp_user: ""
+# Optional. SMTP password (only if smtp_authentication is true)
+smtp_password: ""
+# Required. Specify if SMTP should use TLS
+smtp_use_tls: false
+
+# Required. Specify the email to show in the 'FROM' field.
+noreply_address: ""
+# Required. FQDN (domain) for the controller web frontend, for example, controller.example.com
+fqdn: ""
+# Required. Organization Name
+organization_name: ""
+
+# Required. Admin user first name
+admin_firstname: ""
+# Required. Admin user last name
+admin_lastname: ""
+# Required. Admin user email
+admin_email: ""
+# Required. Admin user password
+admin_password: ""
+
+# Optional. Specify if the installation process should create a self signed cert for TLS
+self_signed_cert: false
+# Optional. Specify if the existing config for controller should be overwritten
+overwrite_existing_configs: false
+# Optional. Specify if docker needs to be installed as part of the installation process
+auto_install_docker: false
+
+# note: optional variables should not be provided as blank strings, which is why they are commented out.
