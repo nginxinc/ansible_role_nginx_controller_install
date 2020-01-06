@@ -10,7 +10,7 @@
     - db_user
     - db_password
     - tsdb_volume_type
-    - smtp_server
+    - smtp_host
     - smtp_port
     - smtp_authentication
     - smtp_use_tls
@@ -31,6 +31,8 @@
 
 - name: "Controller - Installing"
   shell: |
+    # must complete in less than 10 minutes
+    set timeout 600
     ./install.sh \
       --accept-license \
       --database-host '{{ db_host }}' \
@@ -49,13 +51,14 @@
       --admin-lastname '{{ admin_lastname }}' \
       --admin-email '{{ admin_email }}' \
       --admin-password '{{ admin_password }}' \
-      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-path {{ tsdb_nfs_path }}','') }} \
-      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-host {{ tsdb_nfs_host }}','') }} \
-      {{ (smtp_authentication == "true") | ternary('--smtp-user {{ smtp_user }}','') }} \
-      {{ (smtp_authentication == "true") | ternary('--smtp-password {{ smtp_password }}','') }} \
-      {{ (self_signed_cert) | ternary('--self-signed-cert','') }} \
-      {{ (overwrite_existing_configs) | ternary('--overwrite-existing-configs','') }} \
-      {{ (auto_install_docker) | ternary('--auto-install-docker','') }}
+      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-path ' + tsdb_nfs_path,'') }} \
+      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-host ' + tsdb_nfs_host,'') }} \
+      {{ (tsdb_volume_type == "aws") | ternary('--tsdb-aws-volume-id ' + tsdb_aws_volume_id,'') }} \
+      {{ (smtp_authentication | bool) | ternary('--smtp-user ' + smtp_user,'') }} \
+      {{ (smtp_authentication | bool) | ternary('--smtp-password ' + smtp_password,'') }} \
+      {{ (self_signed_cert | bool) | ternary('--self-signed-cert','') }} \
+      {{ (overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs','') }} \
+      {{ (auto_install_docker | bool) | ternary('--auto-install-docker','') }}
   args:
     chdir: "{{ ctrl_install_path }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml

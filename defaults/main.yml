@@ -1,9 +1,10 @@
 ---
 # defaults file for ansible-controller
 
-# optional vars must default to empty
+db_port: "5432"
 tsdb_nfs_path: ""
 tsdb_nfs_host: ""
+tsdb_aws_volume_id: ""
 smtp_user: ""
 smtp_password: ""
 self_signed_cert: ""

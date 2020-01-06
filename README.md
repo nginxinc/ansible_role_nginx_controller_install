@@ -1,4 +1,4 @@
-NGINX Controller Install
+NGINX Controller Install Ansible Role
 =========
 
 This role installs [NGINX Controller](https://www.nginx.com/products/nginx-controller/).
@@ -33,15 +33,16 @@ Role Variables
 | `db_port` | `"5432"` | PostgreSQL database port. | No |
 | `db_user` | `""` | PostgreSQL database user. | Yes |
 | `db_password` | `""` | PostgreSQL database password. | Yes |
-| `tsdb_volume_type` | `""` | Backing volume for time series database. (local/nfs) | Yes |
+| `tsdb_volume_type` | `""` | Backing volume for time series database. (local, nfs or aws) | Yes |
 | `tsdb_nfs_path` | `""` | Time series database NFS path (only if `tsdb_volume_type` is `nfs`) | No |
 | `tsdb_nfs_host` | `""` | Time series database NFS host (only if `tsdb_volume_type` is `nfs`) | No |
+| `tsdb_aws_volume_id` | `""` | Time series database AWS EBS Volume ID (only if `tsdb_volume_type` is `aws`) | No |
 | `smtp_host` | `""` | SMTP Host for emails. | Yes |
 | `smtp_port` | `"25"` | SMTP Port for emails. | Yes |
-| `smtp_authentication` | `""` | Specify if SMTP needs auth (true/false)). | Yes |
+| `smtp_authentication` | `""` | Specify if SMTP needs auth (true or false). | Yes |
 | `smtp_user` | `""` | SMTP user (only provide if `smtp_authentication` is true). | No |
 | `smtp_password` | `""` | SMTP password (only provide if `smtp_authentication` is true). | No |
-| `smtp_use_tls` | `false` | Specify if SMTP should use https (true/false) | Yes |
+| `smtp_use_tls` | `false` | Specify if SMTP should use https (true or false) | Yes |
 | `noreply_address` | `""` | Specify the email to show in the 'FROM' field of controller emails. | Yes |
 | `fqdn` | `""` | FQDN for the controller web frontend and agent communication. For example, controller.example.com. | Yes |
 | `organization_name` | `""` | The organization name. | Yes |
@@ -49,9 +50,9 @@ Role Variables
 | `admin_lastname` | `""` | Admin user last name. | Yes |
 | `admin_email` | `""` | Admin user email. | Yes |
 | `admin_password` | `""` | Admin user password. | Yes |
-| `self_signed_cert` | `false` | Specify if the installation should create a self signed cert for TLS. | No |
-| `overwrite_existing_configs` | `false` | Specify if the existing config for controller should be overwritten. | No |
-| `auto_install_docker` | `false` | Specify if docker needs to be installed as part of the installation process. | No |
+| `self_signed_cert` | `false` | Specify if the installation should create a self signed cert for TLS (true or false). | No |
+| `overwrite_existing_configs` | `false` | Specify if the existing config for controller should be overwritten (true or false). | No |
+| `auto_install_docker` | `false` | Specify if docker needs to be installed as part of the installation process (true or false). | No |
 
 Dependencies
 ------------
@@ -120,7 +121,7 @@ example is using Ubuntu 18.04
       - sed
       - tar
       - python-pexpect  # to support ansible
-      # - nfs-common  # to support nfs remote volume
+      - nfs-common  # to support nfs remote volume
     tags: packages
 
 ## changing security context on the remote host to su to run the installer
@@ -133,7 +134,7 @@ example is using Ubuntu 18.04
   gather_facts: false
 
   roles:
-    - nginx-controller-install
+    - ansible-controller
 
   vars:
     - ctrl_tarball_src: "{{ctrl_install_path}}/{{controller_tarball}}"
@@ -143,7 +144,7 @@ example is using Ubuntu 18.04
     - db_port: "5432"
     - db_user: "naas"
     - db_password: ''
-    - tsdb_volume_type: local
+    - tsdb_volume_type: nfs
     - tsdb_nfs_path: "/controllerdb"
     - tsdb_nfs_host: storage.internal
     - smtp_host: "localhost"
