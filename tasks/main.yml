@@ -62,4 +62,3 @@
   args:
     chdir: "{{ ctrl_install_path }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml
-
