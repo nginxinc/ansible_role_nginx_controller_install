@@ -134,7 +134,7 @@ example is using Ubuntu 18.04
   gather_facts: false
 
   roles:
-    - ansible-controller
+    - nginxinc.nginx_controller_install
 
   vars:
     - ctrl_tarball_src: "{{ctrl_install_path}}/{{controller_tarball}}"
