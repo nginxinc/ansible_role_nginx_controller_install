@@ -33,6 +33,8 @@ Role Variables
 | `db_port` | `"5432"` | PostgreSQL database port. | No |
 | `db_user` | `""` | PostgreSQL database user. | Yes |
 | `db_password` | `""` | PostgreSQL database password. | Yes |
+| `apigw_cert` | `""` |  SSL/TLS cert file path, cannot be used together with self_signed_cert: true. | No |
+| `apigw_key` | `""` |  SSL/TLS key file path, cannot be used together with self_signed_cert: true. | No |
 | `tsdb_volume_type` | `""` | Backing volume for time series database. (local, nfs or aws) | Yes |
 | `tsdb_nfs_path` | `""` | Time series database NFS path (only if `tsdb_volume_type` is `nfs`) | No |
 | `tsdb_nfs_host` | `""` | Time series database NFS host (only if `tsdb_volume_type` is `nfs`) | No |

@@ -19,6 +19,11 @@
 ## Required. Database password
 #db_password: ""
 #
+## Optional. SSL/TLS cert file path, cannot be used together with self_signed_cert: true
+#apigw_cert: ""
+## Optional. SSL/TLS key file path, cannot be used together with self_signed_cert: true
+#apigw_key: ""
+#
 ## Required. Time series database volume type (local, nfs, aws)
 #tsdb_volume_type: "local"
 ## Optional. Time series database NFS path (only if tsdb_volume_type is 'nfs')
@@ -64,4 +69,4 @@
 ## Optional. Specify if docker needs to be installed as part of the installation process
 #auto_install_docker: false
 #
-## note: optional variables should not be provided as blank strings, which is why they are commented out.
+## note: optional variables must not be provided as blank strings, which is why they are commented out.
