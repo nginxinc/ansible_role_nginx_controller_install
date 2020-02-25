@@ -54,8 +54,8 @@
       {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-path ' + tsdb_nfs_path,'') }} \
       {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-host ' + tsdb_nfs_host,'') }} \
       {{ (tsdb_volume_type == "aws") | ternary('--tsdb-aws-volume-id ' + tsdb_aws_volume_id,'') }} \
-      {{ (apigw_cert != "" and apigw_key != "") | ternary('--apigw-cert ' + apigw_cert,'') }} \
-      {{ (apigw_cert != "" and apigw_key != "") | ternary('--apigw-key ' + apigw_key,'') }} \
+      {{ ((apigw_cert is defined and apigw_cert | length > 0) and (apigw_key is defined and apigw_key | length > 0) ) | ternary('--apigw-cert ' + apigw_cert,'') }} \
+      {{ ((apigw_cert is defined and apigw_cert | length > 0) and (apigw_key is defined and apigw_key | length > 0) ) | ternary('--apigw-key ' + apigw_key,'') }} \
       {{ (smtp_authentication | bool) | ternary('--smtp-user ' + smtp_user,'') }} \
       {{ (smtp_authentication | bool) | ternary('--smtp-password ' + smtp_password,'') }} \
       {{ (self_signed_cert | bool) | ternary('--self-signed-cert','') }} \
