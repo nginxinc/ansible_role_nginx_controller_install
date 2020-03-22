@@ -46,7 +46,7 @@ Role Variables
 | `smtp_password` | `""` | SMTP password (only provide if `smtp_authentication` is true). | No |
 | `smtp_use_tls` | `false` | Specify if SMTP should use https (true or false) | Yes |
 | `noreply_address` | `""` | Specify the email to show in the 'FROM' field of controller emails. | Yes |
-| `fqdn` | `""` | FQDN for the controller web frontend and agent communication. For example, controller.example.com. | Yes |
+| `fqdn` | `""` | FQDN for the controller web frontend and agent communication. For example, controller.example.com. This domain name must not exceed 64 characters. | Yes |
 | `organization_name` | `""` | The organization name. | Yes |
 | `admin_firstname` | `""` | Admin user first name. | Yes |
 | `admin_lastname` | `""` | Admin user last name. | Yes |
