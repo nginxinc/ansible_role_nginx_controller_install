@@ -2,7 +2,7 @@ galaxy_info:
   author: NGINX Controller Engineering
   description: Official Ansible role to install NGINX Controller
   company: NGINX / F5
-  role_name: nginx-controller-install
+  role_name: nginx_controller_install
 
   license: Apache-2.0
 
