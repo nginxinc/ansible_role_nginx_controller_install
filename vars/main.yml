@@ -2,71 +2,71 @@
 ## vars file for ansible-controller
 #
 ## Required. Source path to the local Controller tarball file.
-#ctrl_tarball_src: ""
-## Required. The path where the tarball will be extracted to on the remote
-#ctrl_install_path: ""
+#nginx_controller_tarball_source: ""
+## Optional. The path where the tarball will be extracted to on the remote
+#nginx_controller_install_path: ""
 ## Optional. If the tarball is already present on the remote host.
-#remote_src: yes
+#nginx_controller_remote_source: yes
 #
 ## Controller installation parameters
 #
 ## Required. Database host
-#db_host: ""
-## Required. Database port
-#db_port: "5432"
+#nginx_controller_db_host: ""
+## Optional. Database port
+#nginx_controller_db_port: "5432"
 ## Required. Database user
-#db_user: ""
+#nginx_controller_db_user: ""
 ## Required. Database password
-#db_password: ""
+#nginx_controller_db_password: ""
 #
 ## Optional. SSL/TLS cert file path, cannot be used together with self_signed_cert: true
-#apigw_cert: ""
+#nginx_controller_apigw_cert: ""
 ## Optional. SSL/TLS key file path, cannot be used together with self_signed_cert: true
-#apigw_key: ""
+#nginx_controller_apigw_key: ""
 #
 ## Required. Time series database volume type (local, nfs, aws)
-#tsdb_volume_type: "local"
+#nginx_controller_tsdb_volume_type: "local"
 ## Optional. Time series database NFS path (only if tsdb_volume_type is 'nfs')
-#tsdb_nfs_path: ""
+#nginx_controller_tsdb_nfs_path: ""
 ## Optional. Time series database NFS host (only if tsdb_volume_type is 'nfs')
-#tsdb_nfs_host: ""
+#nginx_controller_tsdb_nfs_host: ""
 ## Optional. Time series database AWS EBS Volume ID (only if tsdb_volume_type is 'aws')
-#tsdb_aws_volume_id: ""
+#nginx_controller_tsdb_aws_volume_id: ""
 #
 ## Required. SMTP Host
-#smtp_host: ""
-## Required. SMTP Port
-#smtp_port: "25"
+#nginx_controller_smtp_host: ""
+## Optional. SMTP Port
+#nginx_controller_smtp_port: "25"
 ## Required. Specify if SMTP needs auth (user and pass)
-#smtp_authentication: false
+#nginx_controller_smtp_authentication: false
 ## Optional. SMTP user (only if smtp_authentication is true)
-#smtp_user: ""
+#nginx_controller_smtp_user: ""
 ## Optional. SMTP password (only if smtp_authentication is true)
-#smtp_password: ""
+#nginx_controller_smtp_password: ""
 ## Required. Specify if SMTP should use TLS
-#smtp_use_tls: false
+#nginx_controller_smtp_use_tls: false
 #
 ## Required. Specify the email to show in the 'FROM' field.
-#noreply_address: ""
+#nginx_controller_noreply_address: ""
 ## Required. FQDN (domain) for the controller web frontend, for example, controller.example.com
-#fqdn: ""
+#nginx_controller_fqdn: ""
 ## Required. Organization Name
-#organization_name: ""
+#nginx_controller_organization_name: ""
 #
 ## Required. Admin user first name
-#admin_firstname: ""
+#nginx_controller_admin_firstname: ""
 ## Required. Admin user last name
-#admin_lastname: ""
+#nginx_controller_admin_lastname: ""
 ## Required. Admin user email
-#admin_email: ""
+#nginx_controller_admin_email: ""
 ## Required. Admin user password
-#admin_password: ""
+#nginx_controller_admin_password: ""
 #
 ## Optional. Specify if the installation process should create a self signed cert for TLS
-#self_signed_cert: false
+#nginx_controller_self_signed_cert: false
 ## Optional. Specify if the existing config for controller should be overwritten
-#overwrite_existing_configs: false
+#nginx_controller_overwrite_existing_configs: false
 ## Optional. Specify if docker needs to be installed as part of the installation process
-#auto_install_docker: false
+#nginx_controller_auto_install_docker: false
 #
 ## note: optional variables must not be provided as blank strings, which is why they are commented out.

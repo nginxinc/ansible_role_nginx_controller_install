@@ -2,32 +2,29 @@
   assert:
     that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
   with_items:
-    - ctrl_tarball_src
-    - ctrl_install_path
-    - remote_src
-    - db_host
-    - db_port
-    - db_user
-    - db_password
-    - tsdb_volume_type
-    - smtp_host
-    - smtp_port
-    - smtp_authentication
-    - smtp_use_tls
-    - noreply_address
-    - fqdn
-    - organization_name
-    - admin_firstname
-    - admin_lastname
-    - admin_email
-    - admin_password
+    - nginx_controller_tarball
+    - nginx_controller_db_host
+    - nginx_controller_db_port
+    - nginx_controller_db_user
+    - nginx_controller_db_password
+    - nginx_controller_tsdb_volume_type
+    - nginx_controller_smtp_host
+    - nginx_controller_smtp_authentication
+    - nginx_controller_smtp_use_tls
+    - nginx_controller_noreply_address
+    - nginx_controller_fqdn
+    - nginx_controller_organization_name
+    - nginx_controller_admin_firstname
+    - nginx_controller_admin_lastname
+    - nginx_controller_admin_email
+    - nginx_controller_admin_password
 
 - name: "Controller - Extracting"
   unarchive:
-    src: "{{ ctrl_tarball_src }}"
-    dest: "{{ ctrl_install_path }}"
-    creates: "{{ ctrl_install_path }}/controller-installer"
-    remote_src: "{{ remote_src }}"
+    src: "{{ nginx_controller_tarball }}"
+    dest: "{{ nginx_controller_install_path | default(ansible_env.HOME) }}"
+    creates: "{{ nginx_controller_install_path | default(ansible_env.HOME) }}/controller-installer"
+    remote_src: "{{ nginx_controller_remote_source | default(true) }}"
 
 - name: "Controller - Installing"
   shell: |
@@ -35,32 +32,32 @@
     set timeout 600
     ./install.sh \
       --accept-license \
-      --database-host '{{ db_host }}' \
-      --database-port '{{ db_port }}' \
-      --database-user '{{ db_user }}' \
-      --database-password '{{ db_password }}' \
-      --tsdb-volume-type '{{ tsdb_volume_type }}' \
-      --smtp-host '{{ smtp_host }}' \
-      --smtp-port '{{ smtp_port }}' \
-      --smtp-authentication '{{ smtp_authentication }}' \
-      --smtp-use-tls '{{ smtp_use_tls }}' \
-      --noreply-address '{{ noreply_address }}' \
-      --fqdn '{{ fqdn }}' \
-      --organization-name '{{ organization_name }}' \
-      --admin-firstname '{{ admin_firstname }}' \
-      --admin-lastname '{{ admin_lastname }}' \
-      --admin-email '{{ admin_email }}' \
-      --admin-password '{{ admin_password }}' \
-      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-path ' + tsdb_nfs_path,'') }} \
-      {{ (tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-host ' + tsdb_nfs_host,'') }} \
-      {{ (tsdb_volume_type == "aws") | ternary('--tsdb-aws-volume-id ' + tsdb_aws_volume_id,'') }} \
-      {{ ((apigw_cert is defined and apigw_cert | length > 0) and (apigw_key is defined and apigw_key | length > 0) ) | ternary('--apigw-cert ' + apigw_cert,'') }} \
-      {{ ((apigw_cert is defined and apigw_cert | length > 0) and (apigw_key is defined and apigw_key | length > 0) ) | ternary('--apigw-key ' + apigw_key,'') }} \
-      {{ (smtp_authentication | bool) | ternary('--smtp-user ' + smtp_user,'') }} \
-      {{ (smtp_authentication | bool) | ternary('--smtp-password ' + smtp_password,'') }} \
-      {{ (self_signed_cert | bool) | ternary('--self-signed-cert','') }} \
-      {{ (overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs','') }} \
-      {{ (auto_install_docker | bool) | ternary('--auto-install-docker','') }}
+      --database-host '{{ nginx_controller_db_host }}' \
+      --database-port '{{ nginx_controller_db_port | default(5432) }}' \
+      --database-user '{{ nginx_controller_db_user }}' \
+      --database-password '{{ nginx_controller_db_password }}' \
+      --tsdb-volume-type '{{ nginx_controller_tsdb_volume_type }}' \
+      --smtp-host '{{ nginx_controller_smtp_host }}' \
+      --smtp-port '{{ nginx_controller_smtp_port | default(25) }}' \
+      --smtp-authentication '{{ nginx_controller_smtp_authentication }}' \
+      --smtp-use-tls '{{ nginx_controller_smtp_use_tls }}' \
+      --noreply-address '{{ nginx_controller_noreply_address }}' \
+      --fqdn '{{ nginx_controller_fqdn }}' \
+      --organization-name '{{ nginx_controller_organization_name }}' \
+      --admin-firstname '{{ nginx_controller_admin_firstname }}' \
+      --admin-lastname '{{ nginx_controller_admin_lastname }}' \
+      --admin-email '{{ nginx_controller_admin_email }}' \
+      --admin-password '{{ nginx_controller_admin_password }}' \
+      {{ (nginx_controller_tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-path ' + nginx_controller_tsdb_nfs_path,'') }} \
+      {{ (nginx_controller_tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-host ' + nginx_controller_tsdb_nfs_host,'') }} \
+      {{ (nginx_controller_tsdb_volume_type == "aws") | ternary('--tsdb-aws-volume-id ' + nginx_controller_tsdb_aws_volume_id,'') }} \
+      {{ ((nginx_controller_apigw_cert is defined and nginx_controller_apigw_cert | length > 0) and (nginx_controller_apigw_key is defined and nginx_controller_apigw_key | length > 0) ) | ternary('--apigw-cert ' + nginx_controller_apigw_cert,'') }} \
+      {{ ((nginx_controller_apigw_cert is defined and nginx_controller_apigw_cert | length > 0) and (nginx_controller_apigw_key is defined and nginx_controller_apigw_key | length > 0) ) | ternary('--apigw-key ' + nginx_controller_apigw_key,'') }} \
+      {{ (nginx_controller_smtp_authentication | bool) | ternary('--smtp-user ' + nginx_controller_smtp_user,'') }} \
+      {{ (nginx_controller_smtp_authentication | bool) | ternary('--smtp-password ' + nginx_controller_smtp_password,'') }} \
+      {{ (nginx_controller_self_signed_cert | bool) | ternary('--self-signed-cert','') }} \
+      {{ (nginx_controller_overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs','') }} \
+      {{ (nginx_controller_auto_install_docker | bool) | ternary('--auto-install-docker','') }}
   args:
-    chdir: "{{ ctrl_install_path }}/controller-installer"
+    chdir: "{{ ansible_env.HOME }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml
