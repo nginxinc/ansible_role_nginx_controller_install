@@ -3,7 +3,7 @@
 #
 ## Required. Source path to the local Controller tarball file.
 #nginx_controller_tarball: ""
-## Optional. The path where the tarball will be extracted to on the remote
+## required. The path where the tarball will be extracted to on the remote
 #nginx_controller_install_path: ""
 ## Optional. If the tarball is already present on the remote host.
 #nginx_controller_remote_source: yes

@@ -21,8 +21,8 @@
 - name: "Controller - Extracting"
   unarchive:
     src: "{{ nginx_controller_tarball }}"
-    dest: "{{ nginx_controller_install_path | default(ansible_env.HOME) }}"
-    creates: "{{ nginx_controller_install_path | default(ansible_env.HOME) }}/controller-installer"
+    dest: "{{ nginx_controller_install_path }}"
+    creates: "{{ nginx_controller_install_path }}/controller-installer"
     remote_src: "{{ nginx_controller_remote_source | default(true) }}"
 
 - name: "Controller - Installing"
@@ -58,5 +58,5 @@
       {{ (nginx_controller_overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs','') }} \
       {{ (nginx_controller_auto_install_docker | bool) | ternary('--auto-install-docker','') }}
   args:
-    chdir: "{{ ansible_env.HOME }}/controller-installer"
+    chdir: "{{ nginx_controller_install_path }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml
