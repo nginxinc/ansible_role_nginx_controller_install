@@ -4,7 +4,6 @@
   with_items:
     - nginx_controller_tarball
     - nginx_controller_db_host
-    - nginx_controller_db_port
     - nginx_controller_db_user
     - nginx_controller_db_password
     - nginx_controller_tsdb_volume_type
