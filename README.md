@@ -177,6 +177,12 @@ example is using Ubuntu 18.04
 
 ```
 
+You can then run `ansible-playbook nginx_controller_install.yaml` to execute the playbook.
+
+Alternatively, you can also pass/override any variables at run time using the `--extra-vars` or `-e` flag like so `ansible-playbook nginx_controller_install.yaml -e "nginx_controller_admin_email=user@company.com nginx_controller_admin_password=notsecure nginx_controller_fqdn=controller.example.local"`
+
+You can also pass/override any variables by passing a `yaml` file containing any number of variables like so `ansible-playbook nginx_controller_install.yaml -e "@nginx_controller_install_vars.yaml"`
+
 Troubleshooting
 -------
 
