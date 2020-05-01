@@ -25,6 +25,8 @@
     creates: "{{ nginx_controller_install_path }}/controller-installer"
     remote_src: "{{ nginx_controller_remote_source | default(true) }}"
 
+- msg: "This next step may take up to 10 minutes. Please be patient"
+
 - name: "Controller - Installing"
   shell: |
     # must complete in less than 10 minutes
@@ -60,3 +62,8 @@
   args:
     chdir: "{{ nginx_controller_install_path }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml
+  register: output
+
+- debug:
+    var: output.stdout_lines
+
