@@ -141,6 +141,7 @@ example is using Ubuntu 18.04
 
   vars:
     - nginx_controller_tarball: "{{ ansible_env.HOME }}/{{nginx_controller_tarball}}"
+    - nginx_controller_install_path: /usr/ubuntu
     - nginx_controller_db_host: dbhost.example.com
     - nginx_controller_db_user: "naas"
     - nginx_controller_db_password: ''

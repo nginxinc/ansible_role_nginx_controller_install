@@ -3,6 +3,7 @@
     that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
   with_items:
     - nginx_controller_tarball
+    - nginx_controller_install_path
     - nginx_controller_db_host
     - nginx_controller_db_user
     - nginx_controller_db_password
