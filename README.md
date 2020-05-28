@@ -145,6 +145,7 @@ example is using Ubuntu 18.04
     - nginx_controller_db_host: dbhost.example.com
     - nginx_controller_db_user: "naas"
     - nginx_controller_db_password: ''
+    - nginx_controller_db_enable_ssl: false
     - nginx_controller_tsdb_volume_type: nfs
     - nginx_controller_tsdb_nfs_path: "/controllerdb"
     - nginx_controller_tsdb_nfs_host: storage.internal
