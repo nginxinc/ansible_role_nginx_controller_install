@@ -36,12 +36,10 @@
     set timeout 600
     ./install.sh \
       --accept-license \
-      --non-interactive \
       --database-host '{{ nginx_controller_db_host }}' \
       --database-port '{{ nginx_controller_db_port | default(5432) }}' \
       --database-user '{{ nginx_controller_db_user }}' \
       --database-password '{{ nginx_controller_db_password }}' \
-      --db-enable-ssl '{{ nginx_controller_db_enable_ssl }}' \
       --tsdb-volume-type '{{ nginx_controller_tsdb_volume_type }}' \
       --smtp-host '{{ nginx_controller_smtp_host }}' \
       --smtp-port '{{ nginx_controller_smtp_port | default(25) }}' \
@@ -64,6 +62,7 @@
       {{ (nginx_controller_self_signed_cert | bool) | ternary('--self-signed-cert','') }} \
       {{ (nginx_controller_overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs','') }} \
       {{ (nginx_controller_auto_install_docker | bool) | ternary('--auto-install-docker','') }} \
+      {{ (nginx_controller_db_enable_ssl | bool) | ternary('--db-enable-ssl nginx_controller_db_enable_ssl','') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary('--db-client-cert ' + nginx_controller_db_client_cert,'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary('--db-client-key ' + nginx_controller_db_client_key,'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0))  | ternary('--db-ca ' + nginx_controller_db_ca,'') }}
