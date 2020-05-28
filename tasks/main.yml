@@ -24,7 +24,6 @@
   unarchive:
     src: "{{ nginx_controller_tarball }}"
     dest: "{{ nginx_controller_install_path }}"
-    creates: "{{ nginx_controller_install_path }}/controller-installer"
     remote_src: "{{ nginx_controller_remote_source | default(true) }}"
 
 - name: inform of wait
