@@ -33,6 +33,8 @@
 
 - name: "Controller - Installing"
   shell: |
+    # must complete in less than 10 minutes
+    set timeout 600
     ./install.sh \
       --accept-license \
       --non-interactive \
