@@ -71,19 +71,6 @@ Installing Controller to a remote.
 example is using Ubuntu 18.04
 
 ```yaml
-## on the Ansible host
-- hosts: localhost
-  gather_facts: false
-
-  tasks:
-  - name: generate password hash # https://askubuntu.com/questions/982804/mkpasswd-m-sha-512-produces-incorrect-login
-    expect:
-      echo: yes
-      command: /bin/bash -c "mkpasswd --method=sha-512 | sed 's/\$/\\$/g'"
-      responses:
-        (?i)password: '<some secure password>'
-    register: password_hash
-
 ## on the remote host
 - hosts: controller
   remote_user: ubuntu
@@ -91,11 +78,11 @@ example is using Ubuntu 18.04
   become_method: sudo
   gather_facts: yes
 
-  # supporting su requirement for Controller installer role
+  # Supporting su requirement for Controller installer role
   - name: set root password to support su for Controller installation with Ubuntu
     user:
       name: root
-      password: hostvars['localhost']['password_hash'].stdout_lines[1]
+      password: "{{ su_password | password_hash('sha512') }}"
 
   - name: copy the controller tar archive to the remote host
     copy:
