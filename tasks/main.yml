@@ -38,6 +38,7 @@
 
 - name: "Controller - Installing"
   shell: |
+    timeout --foreground 10m \
     ./install.sh \
       --accept-license \
       --database-host '{{ nginx_controller_db_host }}' \
