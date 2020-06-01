@@ -69,8 +69,8 @@
       {{ (nginx_controller_auto_install_docker | bool) | ternary('--auto-install-docker','') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary('--db-client-cert ' + nginx_controller_db_client_cert,'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary('--db-client-key ' + nginx_controller_db_client_key,'') }} \
-      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0))  | ternary('--db-ca ' + nginx_controller_db_ca,'') }} \
-      {{ ( nginx_controller_version  | float ) >= 3.5 | ternary('--non-interactive','') }}
+      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0)) | ternary('--db-ca ' + nginx_controller_db_ca,'') }} \
+      {{ (( nginx_controller_version | float ) >= 3.5) | ternary('--non-interactive','') }}
   args:
     chdir: "{{ nginx_controller_install_path }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml
