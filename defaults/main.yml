@@ -1,6 +1,7 @@
 ---
 # defaults file for ansible-controller
 
+# empty strings are defined to allow ternary evaluation when these optional parameters are not provided.
 nginx_controller_tsdb_nfs_path: ""
 nginx_controller_tsdb_nfs_host: ""
 nginx_controller_tsdb_aws_volume_id: ""
@@ -11,3 +12,7 @@ nginx_controller_overwrite_existing_configs: ""
 nginx_controller_auto_install_docker: ""
 nginx_controller_apigw_cert: ""
 nginx_controller_apigw_key: ""
+nginx_controller_db_enable_ssl: ""
+nginx_controller_db_ca: "" 
+nginx_controller_db_client_cert: ""
+nginx_controller_db_client_key: ""

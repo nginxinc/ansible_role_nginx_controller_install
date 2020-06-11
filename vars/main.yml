@@ -18,13 +18,21 @@
 #nginx_controller_db_user: ""
 ## Required. Database password
 #nginx_controller_db_password: ""
-#
-## Optional. SSL/TLS cert file path, cannot be used together with self_signed_cert: true
+## Required. Enable database ssl communications. Requires certificate installation at db server and controller. (true, false)
+# nginx_controller_db_enable_ssl: true
+## Optional. Required if nginx_controller_db_enable_ssl=true. Path to the CA certificate file to use for SSL connection to the database
+# nginx_controller_db_ca: ""
+## Optional. Required if nginx_controller_db_enable_ssl=true. Path to the client certificate file to use for SSL connection to the database
+# nginx_controller_db_client_cert: ""
+## Optional. Required if nginx_controller_db_enable_ssl=true. Path to the key file to use for SSL connection to the database
+# nginx_controller_db_client_key: ""
+
+## Optional. Custom certificate for Controller. SSL/TLS cert file path, cannot be used together with self_signed_cert: true
 #nginx_controller_apigw_cert: ""
 ## Optional. SSL/TLS key file path, cannot be used together with self_signed_cert: true
 #nginx_controller_apigw_key: ""
 #
-## Required. Time series database volume type (local, nfs, aws)
+## Required. Time series database volume type (local, nfs, aws)  Resiliency support requires remote volume.
 #nginx_controller_tsdb_volume_type: "local"
 ## Optional. Time series database NFS path (only if tsdb_volume_type is 'nfs')
 #nginx_controller_tsdb_nfs_path: ""
