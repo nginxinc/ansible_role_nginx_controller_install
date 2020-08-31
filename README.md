@@ -56,6 +56,7 @@ Role Variables
 | `nginx_controller_self_signed_cert` | `false` | Specify if the installation should create a self signed cert for TLS (true or false). | No |
 | `nginx_controller_overwrite_existing_configs` | `false` | Specify if the existing config for controller should be overwritten (true or false). | No |
 | `nginx_controller_auto_install_docker` | `false` | Specify if docker needs to be installed as part of the installation process (true or false). | No |
+| `nginx_controller_bundled_db` | `false` | Specify if the installation process should use a bundled database (version >=3.8). | No |
 
 Dependencies
 ------------
