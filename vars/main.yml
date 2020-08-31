@@ -76,5 +76,7 @@
 #nginx_controller_overwrite_existing_configs: false
 ## Optional. Specify if docker needs to be installed as part of the installation process
 #nginx_controller_auto_install_docker: false
+## Optional. Specify if the installation process should use a bundled database (version >=3.8).
+#nginx_controller_bundled_db: false
 #
 ## note: optional variables must not be provided as blank strings, which is why they are commented out.

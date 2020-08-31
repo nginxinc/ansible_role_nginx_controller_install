@@ -26,7 +26,7 @@
     dest: "{{ nginx_controller_install_path }}"
     remote_src: "{{ nginx_controller_remote_source | default(true) }}"
 
-- slurp: 
+- slurp:
     src: "{{ nginx_controller_install_path }}/controller-installer/files/version.txt"
   register: version
 
@@ -71,6 +71,7 @@
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary('--db-client-cert ' + nginx_controller_db_client_cert,'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary('--db-client-key ' + nginx_controller_db_client_key,'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0)) | ternary('--db-ca ' + nginx_controller_db_ca,'') }} \
+      {{ (( nginx_controller_version | float ) >= 3.8) and (nginx_controller_bundled_db | bool) | ternary('--use-bundled-db','') }} \
       {{ (( nginx_controller_version | float ) >= 3.5) | ternary('--non-interactive','') }}
   args:
     chdir: "{{ nginx_controller_install_path }}/controller-installer"
