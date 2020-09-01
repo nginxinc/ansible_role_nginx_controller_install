@@ -28,7 +28,7 @@ Role Variables
 | Variable | Default | Description | Required |
 | -------- | ------- | ----------- | -------- |
 | `nginx_controller_tarball` | `""` | Source path to the Controller tarball file on the remote host. | Yes |
-| `nginx_controller_install_path` | `""` | Path where the tarball is extracted on the remote host. | No |
+| `nginx_controller_install_path` | `""` | Path where the tarball is extracted on the remote host. | Yes |
 | `nginx_controller_remote_source` | `"true"` | If the tarball file exists on the remote machine. | No |
 | `nginx_controller_db_host` | `""` | PostgreSQL database host ip address or FQDN. | Yes |
 | `nginx_controller_db_port` | `"5432"` | PostgreSQL database port. | No |
