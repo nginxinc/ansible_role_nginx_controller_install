@@ -4,9 +4,6 @@
   with_items:
     - nginx_controller_tarball
     - nginx_controller_install_path
-    - nginx_controller_db_host
-    - nginx_controller_db_user
-    - nginx_controller_db_password
     - nginx_controller_tsdb_volume_type
     - nginx_controller_smtp_host
     - nginx_controller_smtp_authentication
@@ -18,7 +15,6 @@
     - nginx_controller_admin_lastname
     - nginx_controller_admin_email
     - nginx_controller_admin_password
-    - nginx_controller_db_enable_ssl
 
 - name: "Controller - Extracting"
   unarchive:
