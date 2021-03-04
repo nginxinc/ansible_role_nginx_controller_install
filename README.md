@@ -28,12 +28,12 @@ Role Variables
 | Variable | Default | Description | Required |
 | -------- | ------- | ----------- | -------- |
 | `nginx_controller_tarball` | `""` | Source path to the Controller tarball file on the remote host. | Yes |
-| `nginx_controller_install_path` | `""` | Path where the tarball is extracted on the remote host. | No |
+| `nginx_controller_install_path` | `""` | Path where the tarball is extracted on the remote host. | Yes |
 | `nginx_controller_remote_source` | `"true"` | If the tarball file exists on the remote machine. | No |
-| `nginx_controller_db_host` | `""` | PostgreSQL database host ip address or FQDN. | Yes |
-| `nginx_controller_db_port` | `"5432"` | PostgreSQL database port. | No |
-| `nginx_controller_db_user` | `""` | PostgreSQL database user. | Yes |
-| `nginx_controller_db_password` | `""` | PostgreSQL database password. | Yes |
+| `nginx_controller_db_host` | `""` | PostgreSQL database host ip address or FQDN, unnecessary when using bundled_db. | No |
+| `nginx_controller_db_port` | `"5432"` | PostgreSQL database port, unnecessary when using bundled_db. | No |
+| `nginx_controller_db_user` | `""` | PostgreSQL database user, unnecessary when using bundled_db. | No |
+| `nginx_controller_db_password` | `""` | PostgreSQL database password, unnecessary when using bundled_db. | No |
 | `nginx_controller_apigw_cert` | `""` |  SSL/TLS cert file path, cannot be used together with self_signed_cert: true. | No |
 | `nginx_controller_apigw_key` | `""` |  SSL/TLS key file path, cannot be used together with self_signed_cert: true. | No |
 | `nginx_controller_tsdb_volume_type` | `""` | Backing volume for time series database. (local, nfs or aws) | Yes |
@@ -56,6 +56,7 @@ Role Variables
 | `nginx_controller_self_signed_cert` | `false` | Specify if the installation should create a self signed cert for TLS (true or false). | No |
 | `nginx_controller_overwrite_existing_configs` | `false` | Specify if the existing config for controller should be overwritten (true or false). | No |
 | `nginx_controller_auto_install_docker` | `false` | Specify if docker needs to be installed as part of the installation process (true or false). | No |
+| `nginx_controller_bundled_db` | `false` | Specify if the installation process should use a bundled database (version >=3.8). | No |
 
 Dependencies
 ------------

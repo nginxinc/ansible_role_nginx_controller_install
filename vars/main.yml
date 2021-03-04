@@ -10,15 +10,17 @@
 #
 ## Controller installation parameters
 #
-## Required. Database host
+## Optional. Use a bundled PostgreSQL database. Not recommended for production systems.
+#nginx_controller_bundled_db: false
+## Optional. Database host. Required if nginx_controller_bundled_db=false.
 #nginx_controller_db_host: ""
 ## Optional. Database port
 #nginx_controller_db_port: "5432"
-## Required. Database user
+## Optional. Database user. Required if nginx_controller_bundled_db=false.
 #nginx_controller_db_user: ""
-## Required. Database password
+## Optional. Database password. Required if nginx_controller_bundled_db=false.
 #nginx_controller_db_password: ""
-## Required. Enable database ssl communications. Requires certificate installation at db server and controller. (true, false)
+## Optional. Enable database ssl communications. Requires certificate installation at db server and controller. (true, false)
 # nginx_controller_db_enable_ssl: true
 ## Optional. Required if nginx_controller_db_enable_ssl=true. Path to the CA certificate file to use for SSL connection to the database
 # nginx_controller_db_ca: ""
@@ -76,5 +78,7 @@
 #nginx_controller_overwrite_existing_configs: false
 ## Optional. Specify if docker needs to be installed as part of the installation process
 #nginx_controller_auto_install_docker: false
+## Optional. Specify if the installation process should use a bundled database (version >=3.8)
+#nginx_controller_bundled_db: false
 #
 ## note: optional variables must not be provided as blank strings, which is why they are commented out.
