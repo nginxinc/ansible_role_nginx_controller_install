@@ -112,6 +112,8 @@ example is using Ubuntu 18.04
       - sed
       - tar
       - jq
+      - socat
+      - conntrack
       - python-pexpect  # to support ansible
       - nfs-common  # to support nfs remote volume
     tags: packages
