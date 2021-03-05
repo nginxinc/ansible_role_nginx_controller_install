@@ -27,7 +27,7 @@
   register: version
 
 - set_fact:
-    nginx_controller_version: "{{ ( version['content'] | b64decode ) | regex_replace('(^version:\\s*)([0-9].[0-9])(.[0-9]\n)', '\\2') }}"
+    nginx_controller_version: "{{ ( version['content'] | b64decode ) | regex_replace('(^version:\\s*)([0-9]+\\.[0-9]+)(\\.[0-9]+\n)', '\\2') }}"
 
 - debug:
     msg: "This next step may take up to 10 minutes. Please be patient"
@@ -59,12 +59,12 @@
       {{ (nginx_controller_self_signed_cert | bool) | ternary('--self-signed-cert','') }} \
       {{ (nginx_controller_overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs','') }} \
       {{ (nginx_controller_auto_install_docker | bool) | ternary('--auto-install-docker','') }} \
-      {{ ((nginx_controller_bundled_db | bool) and ( nginx_controller_version | float ) >= 3.8) | ternary('--use-bundled-db','--database-host' + nginx_controller_db_host + '--database-port' + nginx_controller_db_port + '--database-user' + nginx_controller_db_user + '--database-password' + nginx_controller_db_password) }} \
+      {{ ((nginx_controller_bundled_db | bool) and ( nginx_controller_version is version('3.8', operator='ge', strict=True ))) | ternary('--use-bundled-db','--database-host "' + nginx_controller_db_host + '" --database-port "' + nginx_controller_db_port + '" --database-user "' + nginx_controller_db_user + '" --database-password "' + nginx_controller_db_password + '"' ) }} \
       {{ (nginx_controller_db_enable_ssl | bool) | ternary('--db-enable-ssl','') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary('--db-client-cert ' + nginx_controller_db_client_cert,'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary('--db-client-key ' + nginx_controller_db_client_key,'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0)) | ternary('--db-ca ' + nginx_controller_db_ca,'') }} \
-      {{ (( nginx_controller_version | float ) >= 3.5) | ternary('--non-interactive','') }}
+      {{ ((nginx_controller_version is version('3.5', operator='ge', strict=True)  ) ) | ternary('--non-interactive','') }}
   args:
     chdir: "{{ nginx_controller_install_path }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml
