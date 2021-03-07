@@ -2,6 +2,11 @@
 # defaults file for ansible-controller
 
 # empty strings are defined to allow ternary evaluation when these optional parameters are not provided.
+nginx_controller_configdb_volume_type: ""
+nginx_controller_configdb_nfs_path: ""
+nginx_controller_configdb_nfs_host: ""
+nginx_controller_configdb_aws_volume_id: ""
+nginx_controller_tsdb_volume_type: ""
 nginx_controller_tsdb_nfs_path: ""
 nginx_controller_tsdb_nfs_host: ""
 nginx_controller_tsdb_aws_volume_id: ""

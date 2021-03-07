@@ -40,6 +40,10 @@ Role Variables
 | `nginx_controller_tsdb_nfs_path` | `""` | Time series database NFS path (only if `tsdb_volume_type` is `nfs`) | No |
 | `nginx_controller_tsdb_nfs_host` | `""` | Time series database NFS host (only if `tsdb_volume_type` is `nfs`) | No |
 | `nginx_controller_tsdb_aws_volume_id` | `""` | Time series database AWS EBS Volume ID (only if `tsdb_volume_type` is `aws`) | No |
+| `nginx_controller_configdb_volume_type` | `""` | Backing volume for config database. (local, nfs or aws) | No |
+| `nginx_controller_configdb_nfs_path` | `""` | Config database NFS path (only if `configdb_volume_type` is `nfs`) | No |
+| `nginx_controller_configdb_nfs_host` | `""` | Config database NFS host (only if `configdb_volume_type` is `nfs`) | No |
+| `nginx_controller_configdb_aws_volume_id` | `""` | Config database AWS EBS Volume ID (only if `configdb_volume_type` is `aws`) | No |
 | `nginx_controller_smtp_host` | `""` | SMTP Host for emails. | Yes |
 | `nginx_controller_smtp_port` | `"25"` | SMTP Port for emails. | No |
 | `nginx_controller_smtp_authentication` | `""` | Specify if SMTP needs auth (true or false). | Yes |
@@ -57,6 +61,9 @@ Role Variables
 | `nginx_controller_overwrite_existing_configs` | `false` | Specify if the existing config for controller should be overwritten (true or false). | No |
 | `nginx_controller_auto_install_docker` | `false` | Specify if docker needs to be installed as part of the installation process (true or false). | No |
 | `nginx_controller_bundled_db` | `false` | Specify if the installation process should use a bundled database (version >=3.8). | No |
+
+> _Note_ `nginx_controller_configdb_*` options are for use with the `nginx_controller_bundled_db`,
+>  and are mutually exclusive with the `nginx_controller_db_` parameters.
 
 Dependencies
 ------------
