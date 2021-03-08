@@ -16,6 +16,14 @@
     - nginx_controller_admin_email
     - nginx_controller_admin_password
 
+- name: Check for conflicting DB options
+  fail:
+    msg: "You must chose either the bundled_db or provide db connection details. The `nginx_controller_bundled_db` and optional `nginx_controller_configdb_volume_*` variables are mutually exclusive with `nginx_controller_db_*` options"
+  when:
+    - ( ( nginx_controller_bundled_db | bool ) and nginx_controller_db_host != "" ) or
+      ( ( not nginx_controller_bundled_db ) and nginx_controller_db_host == "" ) or
+      ( ( not nginx_controller_bundled_db ) and nginx_controller_configdb_volume_type != "" )
+
 - name: "Controller - Extracting"
   unarchive:
     src: "{{ nginx_controller_tarball }}"
@@ -49,21 +57,25 @@
       --admin-lastname '{{ nginx_controller_admin_lastname }}' \
       --admin-email '{{ nginx_controller_admin_email }}' \
       --admin-password '{{ nginx_controller_admin_password }}' \
-      {{ (nginx_controller_tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-path ' + nginx_controller_tsdb_nfs_path,'') }} \
-      {{ (nginx_controller_tsdb_volume_type == "nfs") | ternary('--tsdb-nfs-host ' + nginx_controller_tsdb_nfs_host,'') }} \
-      {{ (nginx_controller_tsdb_volume_type == "aws") | ternary('--tsdb-aws-volume-id ' + nginx_controller_tsdb_aws_volume_id,'') }} \
-      {{ ((nginx_controller_apigw_cert is defined and nginx_controller_apigw_cert | length > 0) and (nginx_controller_apigw_key is defined and nginx_controller_apigw_key | length > 0) ) | ternary('--apigw-cert ' + nginx_controller_apigw_cert,'') }} \
-      {{ ((nginx_controller_apigw_cert is defined and nginx_controller_apigw_cert | length > 0) and (nginx_controller_apigw_key is defined and nginx_controller_apigw_key | length > 0) ) | ternary('--apigw-key ' + nginx_controller_apigw_key,'') }} \
-      {{ (nginx_controller_smtp_authentication | bool) | ternary('--smtp-user ' + nginx_controller_smtp_user,'') }} \
-      {{ (nginx_controller_smtp_authentication | bool) | ternary('--smtp-password ' + nginx_controller_smtp_password,'') }} \
+      {{ (nginx_controller_tsdb_volume_type == "nfs") | ternary("--tsdb-nfs-path '" + nginx_controller_tsdb_nfs_path + "'",'') }} \
+      {{ (nginx_controller_tsdb_volume_type == "nfs") | ternary("--tsdb-nfs-host '" + nginx_controller_tsdb_nfs_host + "'",'') }} \
+      {{ (nginx_controller_tsdb_volume_type == "aws") | ternary("--tsdb-aws-volume-id '" + nginx_controller_tsdb_aws_volume_id + "'",'') }} \
+      {{ (nginx_controller_configdb_volume_type != "" ) | ternary("--configdb-volume-type '" + nginx_controller_configdb_volume_type + "'", '') }} \
+      {{ (nginx_controller_configdb_volume_type == "nfs") | ternary("--configdb-nfs-path '" + nginx_controller_configdb_nfs_path + "'",'') }} \
+      {{ (nginx_controller_configdb_volume_type == "nfs") | ternary("--configdb-nfs-host '" + nginx_controller_configdb_nfs_host + "'",'') }} \
+      {{ (nginx_controller_configdb_volume_type == "aws") | ternary("--configdb-aws-volume-id '" + nginx_controller_configdb_aws_volume_id + "'",'') }} \
+      {{ ((nginx_controller_apigw_cert is defined and nginx_controller_apigw_cert | length > 0) and (nginx_controller_apigw_key is defined and nginx_controller_apigw_key | length > 0) ) | ternary("--apigw-cert '" + nginx_controller_apigw_cert + "'",'') }} \
+      {{ ((nginx_controller_apigw_cert is defined and nginx_controller_apigw_cert | length > 0) and (nginx_controller_apigw_key is defined and nginx_controller_apigw_key | length > 0) ) | ternary("--apigw-key '" + nginx_controller_apigw_key + "'",'') }} \
+      {{ (nginx_controller_smtp_authentication | bool) | ternary("--smtp-user '" + nginx_controller_smtp_user + "'",'') }} \
+      {{ (nginx_controller_smtp_authentication | bool) | ternary("--smtp-password '" + nginx_controller_smtp_password + "'",'') }} \
       {{ (nginx_controller_self_signed_cert | bool) | ternary('--self-signed-cert','') }} \
       {{ (nginx_controller_overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs','') }} \
       {{ (nginx_controller_auto_install_docker | bool) | ternary('--auto-install-docker','') }} \
-      {{ ((nginx_controller_bundled_db | bool) and ( nginx_controller_version is version('3.8', operator='ge', strict=True ))) | ternary('--use-bundled-db','--database-host "' + nginx_controller_db_host + '" --database-port "' + nginx_controller_db_port + '" --database-user "' + nginx_controller_db_user + '" --database-password "' + nginx_controller_db_password + '"' ) }} \
-      {{ (nginx_controller_db_enable_ssl | bool) | ternary('--db-enable-ssl','') }} \
-      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary('--db-client-cert ' + nginx_controller_db_client_cert,'') }} \
-      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary('--db-client-key ' + nginx_controller_db_client_key,'') }} \
-      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0)) | ternary('--db-ca ' + nginx_controller_db_ca,'') }} \
+      {{ ((nginx_controller_bundled_db | bool) and ( nginx_controller_version is version('3.8', operator='ge', strict=True ))) | ternary("--use-bundled-db","--database-host '" + nginx_controller_db_host + "' --database-port '" + nginx_controller_db_port + "' --database-user '" + nginx_controller_db_user + "' --database-password '" + nginx_controller_db_password + "'" ) }} \
+      {{ ((nginx_controller_db_enable_ssl | bool) and ( not nginx_controller_bundled_db )) | ternary('--db-enable-ssl true','') }} \
+      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary("--db-client-cert '" + nginx_controller_db_client_cert + "'",'') }} \
+      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary("--db-client-key '" + nginx_controller_db_client_key + "'",'') }} \
+      {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0)) | ternary("--db-ca '" + nginx_controller_db_ca + "'",'') }} \
       {{ ((nginx_controller_version is version('3.5', operator='ge', strict=True)  ) ) | ternary('--non-interactive','') }}
   args:
     chdir: "{{ nginx_controller_install_path }}/controller-installer"
