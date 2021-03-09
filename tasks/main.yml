@@ -18,7 +18,10 @@
 
 - name: Check for conflicting DB options
   fail:
-    msg: "You must chose either the bundled_db or provide db connection details. The `nginx_controller_bundled_db` and optional `nginx_controller_configdb_volume_*` variables are mutually exclusive with `nginx_controller_db_*` options"
+    msg: >
+      "You must chose either the bundled_db or provide db connection details."
+      "The `nginx_controller_bundled_db` and optional `nginx_controller_configdb_volume_*`"
+      "variables are mutually exclusive with `nginx_controller_db_*` options"
   when:
     - ( ( nginx_controller_bundled_db | bool ) and nginx_controller_db_host != "" ) or
       ( ( not nginx_controller_bundled_db ) and nginx_controller_db_host == "" ) or
