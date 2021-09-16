@@ -1,4 +1,23 @@
-.vscode
+# Any private crt and keys #
+############################
 *.crt
 *.key
+*~
+\#*
+!molecule.crt
+!molecule.key
+
+# OS Specific #
+###############
+Thumbs.db
+.DS_Store
+.vscode
+
+# Ansible specific #
+####################
+.cache
+*.retry
+
+# Python specific #
+###################
 __pycache__

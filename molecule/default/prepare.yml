@@ -1,0 +1,10 @@
+---
+- name: Prepare Test Node
+  hosts: controllers
+  gather_facts: false
+  tasks:
+    - name: Copy controller installer mock tarball to host
+      ansible.builtin.copy:
+        src: files/controller-installer-mock.tar.gz
+        dest: /home/controller-installer.tar.gz
+        mode: "0644"
