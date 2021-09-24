@@ -1,0 +1,22 @@
+---
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint --force-color
+platforms:
+  - name: ubuntu-bionic
+    groups:
+      - controllers
+    image: ubuntu:bionic
+    dockerfile: ../Dockerfile.j2
+    networks:
+      - name: molecule-test
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: prepare.yml
+    converge: converge.yml
+    verify: verify.yml
+  log: false

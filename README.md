@@ -6,11 +6,11 @@ This role installs [NGINX Controller](https://www.nginx.com/products/nginx-contr
 Requirements
 ------------
 
-* Controller tarball file from the [NGINX Customer Portal](https://cs.nginx.com/login).
+* Controller tarball file from the [F5 Customer Portal](https://my.f5.com).
 
 For the installation script to work:
 
-* Supported operating systems: Ubuntu, Debian, Centos, Red Hat Enterprise Linux
+* Supported operating systems: Ubuntu, Debian, CentOS, Red Hat Enterprise Linux
 * Postgres 9.5 with user credentials and permissions to allow creation of databases, write, read.
 * BASH >= 4.0
 * Docker Community Edition 18.09.0 or later  (installer with install for you if missing)
@@ -186,7 +186,7 @@ You can also pass/override any variables by passing a `yaml` file containing any
 Troubleshooting
 -------
 
-* Check the installation logs in `/var/log/nginx-controller/nginx-controller-install.log` on the remote.  Above task example pulls those to the Ansible server.
+* Check the installation logs in `/var/log/nginx-controller/nginx-controller-install.log` on the remote. Above task example pulls those to the Ansible server.
 
 License
 -------

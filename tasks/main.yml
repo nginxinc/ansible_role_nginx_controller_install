@@ -1,3 +1,4 @@
+---
 - name: Fail if required variables are not defined
   assert:
     that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
@@ -23,27 +24,30 @@
       "The `nginx_controller_bundled_db` and optional `nginx_controller_configdb_volume_*`"
       "variables are mutually exclusive with `nginx_controller_db_*` options"
   when:
-    - ( ( nginx_controller_bundled_db | bool ) and nginx_controller_db_host != "" ) or
-      ( ( not nginx_controller_bundled_db ) and nginx_controller_db_host == "" ) or
-      ( ( not nginx_controller_bundled_db ) and nginx_controller_configdb_volume_type != "" )
+    - ( ( nginx_controller_bundled_db | bool ) and nginx_controller_db_host | length > 0 ) or
+      ( ( not nginx_controller_bundled_db ) and nginx_controller_db_host | length == 0 ) or
+      ( ( not nginx_controller_bundled_db ) and nginx_controller_configdb_volume_type | length > 0 )
 
-- name: "Controller - Extracting"
+- name: Controller - Extracting
   unarchive:
     src: "{{ nginx_controller_tarball }}"
     dest: "{{ nginx_controller_install_path }}"
     remote_src: "{{ nginx_controller_remote_source | default(true) }}"
 
-- slurp:
+- name: Fetch Controller version
+  slurp:
     src: "{{ nginx_controller_install_path }}/controller-installer/files/version.txt"
   register: version
 
-- set_fact:
-    nginx_controller_version: "{{ ( version['content'] | b64decode ) | regex_replace('(^version:\\s*)([0-9]+\\.[0-9]+)(\\.[0-9]+\n)', '\\2') }}"
+- name: Parse Controller version
+  set_fact:
+    nginx_controller_version: "{{ ( version['content'] | b64decode ) | regex_replace('(^version:\\s*)([0-9]+\\.[0-9]+)(\\.[0-9]+)\n?', '\\2') }}"
 
-- debug:
-    msg: "This next step may take up to 10 minutes. Please be patient"
+- name: Echo status message
+  debug:
+    msg: This next step may take up to 10 minutes. Please be patient.
 
-- name: "Controller - Installing"
+- name: Controller - Installing
   shell: |
     timeout --foreground 10m \
     ./install.sh \
@@ -85,6 +89,6 @@
     creates: /opt/nginx-controller/k8s-namespace.yaml
   register: output
 
-- debug:
+- name: Show Controller installation output
+  debug:
     var: output.stdout_lines
-

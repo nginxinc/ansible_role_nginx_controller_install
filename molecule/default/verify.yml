@@ -1,0 +1,12 @@
+---
+- name: Verify File
+  hosts: controllers
+  tasks:
+    - name: Store the statistics of /opt/nginx-controller/k8s-namespace.yaml in the 'namespace_file' variable
+      stat:
+        path: /opt/nginx-controller/k8s-namespace.yaml
+      register: namespace_file
+
+    - name: Ensure /opt/nginx-controller/k8s-namespace.yaml exists
+      assert:
+        that: namespace_file.stat.exists == true
