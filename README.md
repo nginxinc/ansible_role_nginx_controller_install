@@ -82,32 +82,32 @@ example is using Ubuntu 18.04
 ## on the remote host
 - hosts: controller
   remote_user: ubuntu
-  become: yes
+  become: true
   become_method: sudo
-  gather_facts: yes
+  gather_facts: true
 
   # Supporting su requirement for Controller installer role
-  - name: set root password to support su for Controller installation with Ubuntu
+  - name: Set root password to support su for Controller installation with Ubuntu
     user:
       name: root
       password: "{{ su_password | password_hash('sha512') }}"
 
-  - name: copy the controller tar archive to the remote host
+  - name: Copy the controller tar archive to the remote host
     copy:
       src: "{{playbook_dir}}/{{nginx_controller_tarball}}"
       dest: "{{ ansible_env.HOME }}/{{nginx_controller_tarball}}"
       owner: ubuntu
       group: ubuntu
-      force: yes
+      force: true
     vars:
       nginx_controller_install_path: "{{ ansible_env.HOME }}"
       nginx_controller_tarball: "controller-installer-<>.tar.gz"
 
-  - name:  make sure all the prerequisites are present on the remote
+  - name: Make sure all the prerequisites are present on the remote
     apt:
       name: "{{ packages }}"
       state: present
-      update_cache: yes
+      update_cache: true
     vars:
       packages:
       - gettext
@@ -121,15 +121,16 @@ example is using Ubuntu 18.04
       - jq
       - socat
       - conntrack
+      - ebtables
       - python-pexpect  # to support ansible
       - nfs-common  # to support nfs remote volume
     tags: packages
 
 ## changing security context on the remote host to su to run the installer
-- name: install controller
+- name: Install Controller
   remote_user: ubuntu
   hosts: controller
-  become: yes
+  become: true
   become_user: ubuntu
   become_method: su  # note that the become method is required to be su, you will need to support that for your distribution.
   gather_facts: false
@@ -165,12 +166,12 @@ example is using Ubuntu 18.04
 # pull the install log for review
 - hosts: controller
   remote_user: ubuntu
-  become: yes
+  become: true
   become_method: sudo
   gather_facts: false
 
   tasks:
-  - name: fetch the install log
+  - name: Fetch the install log
     fetch:
       src: /var/log/nginx-controller/nginx-controller-install.log
       dest: "{{playbook_dir}}/logs/"
