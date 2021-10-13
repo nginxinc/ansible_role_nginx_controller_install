@@ -88,64 +88,58 @@ Ubuntu:
 
 ## Example Playbook
 
-The following playbook example will use this role to install controller. Check the [variables](#role-variables) and set the values inside `<`,`>` accordingly.
-
-Installing Controller to a remote.
-example is using Ubuntu 18.04
+The following playbook example will use this role to install NGINX Controller on an Ubuntu 18.04 target. Check the [variables](#role-variables) and set the values inside `<>` accordingly.
 
 ```yaml
-- name: Install Controller
+- name: Install NGINX Controller
   remote_user: ubuntu
   hosts: controller
   become: true
   become_user: ubuntu
-  become_method: su  # note that the become method is required to be su, you will need to support that for your distribution.
+  become_method: su
   gather_facts: false
+  tasks:
+    - name: Install NGINX Controller
+      include_role:
+        name: nginxinc.nginx_controller_install
+      vars:
+        - nginx_controller_tarball: "{{ ansible_env.HOME }}/{{nginx_controller_tarball}}"
+        - nginx_controller_install_path: /usr/ubuntu
+        - nginx_controller_db_host: dbhost.example.com
+        - nginx_controller_db_user: "naas"
+        - nginx_controller_db_password: ''
+        - nginx_controller_db_enable_ssl: false
+        - nginx_controller_tsdb_volume_type: nfs
+        - nginx_controller_tsdb_nfs_path: "/controllerdb"
+        - nginx_controller_tsdb_nfs_host: storage.internal
+        - nginx_controller_smtp_host: "localhost"
+        - nginx_controller_smtp_authentication: false
+        - nginx_controller_smtp_use_tls: false
+        - nginx_controller_noreply_address: "noreply@example.com"
+        - nginx_controller_fqdn:  controller.example.com
+        - nginx_controller_organization_name: "Example"
+        - nginx_controller_admin_firstname: "Firstname"
+        - nginx_controller_admin_lastname: "Lastname"
+        - nginx_controller_admin_email: "firstname@example.com"
+        - nginx_controller_admin_password: ''
+        - nginx_controller_self_signed_cert: true
+        - nginx_controller_overwrite_existing_configs: true
+        - ansible_python_interpreter: /usr/bin/python3
+        - ansible_become_password: '<some secure password>'
 
-  roles:
-    - nginxinc.nginx_controller_install
-
-  vars:
-    - nginx_controller_tarball: "{{ ansible_env.HOME }}/{{nginx_controller_tarball}}"
-    - nginx_controller_install_path: /usr/ubuntu
-    - nginx_controller_db_host: dbhost.example.com
-    - nginx_controller_db_user: "naas"
-    - nginx_controller_db_password: ''
-    - nginx_controller_db_enable_ssl: false
-    - nginx_controller_tsdb_volume_type: nfs
-    - nginx_controller_tsdb_nfs_path: "/controllerdb"
-    - nginx_controller_tsdb_nfs_host: storage.internal
-    - nginx_controller_smtp_host: "localhost"
-    - nginx_controller_smtp_authentication: false
-    - nginx_controller_smtp_use_tls: false
-    - nginx_controller_noreply_address: "noreply@example.com"
-    - nginx_controller_fqdn:  controller.example.com
-    - nginx_controller_organization_name: "Example"
-    - nginx_controller_admin_firstname: "Firstname"
-    - nginx_controller_admin_lastname: "Lastname"
-    - nginx_controller_admin_email: "firstname@example.com"
-    - nginx_controller_admin_password: ''
-    - nginx_controller_self_signed_cert: true
-    - nginx_controller_overwrite_existing_configs: true
-    - ansible_python_interpreter: /usr/bin/python3
-    - ansible_become_password: '<some secure password>'
-
-# pull the install log for review
-- hosts: controller
+# Pull the NGINX Controller install log for review
+- name: Fetch NGINX Controller install log for review
+  hosts: controller
   remote_user: ubuntu
   become: true
   become_method: sudo
   gather_facts: false
-
   tasks:
-  - name: Fetch the install log
-    fetch:
-      src: /var/log/nginx-controller/nginx-controller-install.log
-      dest: "{{playbook_dir}}/logs/"
-
+    - name: Fetch the install log
+      fetch:
+        src: /var/log/nginx-controller/nginx-controller-install.log
+        dest: "{{playbook_dir}}/logs/"
 ```
-
-You can then run `ansible-playbook nginx_controller_install.yaml` to execute the playbook.
 
 ## Troubleshooting
 
