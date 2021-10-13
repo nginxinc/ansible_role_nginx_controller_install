@@ -6,17 +6,36 @@ lint: |
   yamllint .
   ansible-lint --force-color
 platforms:
+  - name: centos-7
+    image: centos:7
+    dockerfile: Dockerfile.j2
+    privileged: true
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    command: "/usr/sbin/init"
+  - name: debian-stretch
+    image: debian:stretch-slim
+    dockerfile: Dockerfile.j2
+    privileged: true
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    command: "/sbin/init"
   - name: ubuntu-bionic
-    groups:
-      - controllers
     image: ubuntu:bionic
-    dockerfile: ../Dockerfile.j2
-    networks:
-      - name: molecule-test
+    dockerfile: Dockerfile.j2
+    privileged: true
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    command: "/sbin/init"
+  - name: ubuntu-focal
+    image: ubuntu:focal
+    dockerfile: Dockerfile.j2
+    privileged: true
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    command: "/sbin/init"
 provisioner:
   name: ansible
   playbooks:
-    prepare: prepare.yml
     converge: converge.yml
     verify: verify.yml
-  log: false

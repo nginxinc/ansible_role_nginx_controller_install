@@ -1,14 +1,14 @@
 ---
 - name: Converge
-  hosts: controllers
+  hosts: all
   tasks:
-    - name: Call Controller Install Role
+    - name: Install NGINX Controller
       include_role:
-        name: ansible-role-nginx-controller-install
+        name: ansible_role_nginx_controller_install
       vars:
         nginx_controller_fqdn: "controller.test.com"
-        nginx_controller_tarball: "/home/controller-installer.tar.gz"
-        nginx_controller_remote_source: true
+        nginx_controller_tarball: "controller-installer-mock.tar.gz"
+        nginx_controller_remote_source: false
         nginx_controller_bundled_db: true
         nginx_controller_install_path: /home
         nginx_controller_tsdb_volume_type: "local"

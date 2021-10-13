@@ -24,30 +24,35 @@
       "The `nginx_controller_bundled_db` and optional `nginx_controller_configdb_volume_*`"
       "variables are mutually exclusive with `nginx_controller_db_*` options"
   when:
-    - ( ( nginx_controller_bundled_db | bool ) and nginx_controller_db_host | length > 0 ) or
-      ( ( not nginx_controller_bundled_db ) and nginx_controller_db_host | length == 0 ) or
-      ( ( not nginx_controller_bundled_db ) and nginx_controller_configdb_volume_type | length > 0 )
+    - ((nginx_controller_bundled_db | bool) and nginx_controller_db_host | length > 0) or
+      ((not nginx_controller_bundled_db) and nginx_controller_db_host | length == 0) or
+      ((not nginx_controller_bundled_db) and nginx_controller_configdb_volume_type | length > 0)
 
-- name: Controller - Extracting
+- name: Install NGINX Controller prerequisites
+  package:
+    name: "{{ lookup('vars', 'nginx_controller_' + (ansible_facts['os_family'] | lower) + '_dependencies') }}"
+    state: present
+
+- name: Unpack NGINX Controller
   unarchive:
     src: "{{ nginx_controller_tarball }}"
     dest: "{{ nginx_controller_install_path }}"
     remote_src: "{{ nginx_controller_remote_source | default(true) }}"
 
-- name: Fetch Controller version
+- name: Fetch NGINX Controller version
   slurp:
     src: "{{ nginx_controller_install_path }}/controller-installer/files/version.txt"
   register: version
 
-- name: Parse Controller version
+- name: Parse NGINX Controller version
   set_fact:
-    nginx_controller_version: "{{ ( version['content'] | b64decode ) | regex_replace('(^version:\\s*)([0-9]+\\.[0-9]+)(\\.[0-9]+)\n?', '\\2') }}"
+    nginx_controller_version: "{{ (version['content'] | b64decode) | regex_replace('(^version:\\s*)([0-9]+\\.[0-9]+)(\\.[0-9]+)\n?', '\\2') }}"
 
 - name: Echo status message
   debug:
     msg: This next step may take up to 10 minutes. Please be patient.
 
-- name: Controller - Installing
+- name: Install NGINX Controller
   shell: |
     timeout --foreground 10m \
     ./install.sh \
@@ -83,12 +88,12 @@
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary("--db-client-cert '" + nginx_controller_db_client_cert + "'",'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary("--db-client-key '" + nginx_controller_db_client_key + "'",'') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0)) | ternary("--db-ca '" + nginx_controller_db_ca + "'",'') }} \
-      {{ ((nginx_controller_version is version('3.5', operator='ge', strict=True)  ) ) | ternary('--non-interactive','') }}
+      {{ (nginx_controller_version is version('3.5', operator='ge', strict=True)) | ternary('--non-interactive','') }}
   args:
     chdir: "{{ nginx_controller_install_path }}/controller-installer"
     creates: /opt/nginx-controller/k8s-namespace.yaml
   register: output
 
-- name: Show Controller installation output
+- name: Display NGINX Controller installation output
   debug:
     var: output.stdout_lines
