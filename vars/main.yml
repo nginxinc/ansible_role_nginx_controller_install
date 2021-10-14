@@ -12,17 +12,22 @@ nginx_controller_configdb_volume_type: ""
 nginx_controller_configdb_nfs_path: ""
 nginx_controller_configdb_nfs_host: ""
 nginx_controller_configdb_aws_volume_id: ""
+
 nginx_controller_tsdb_volume_type: ""
 nginx_controller_tsdb_nfs_path: ""
 nginx_controller_tsdb_nfs_host: ""
 nginx_controller_tsdb_aws_volume_id: ""
+
 nginx_controller_smtp_user: ""
 nginx_controller_smtp_password: ""
+
 nginx_controller_self_signed_cert: ""
 nginx_controller_overwrite_existing_configs: ""
 nginx_controller_auto_install_docker: ""
+
 nginx_controller_apigw_cert: ""
 nginx_controller_apigw_key: ""
+
 nginx_controller_db_host: ""
 nginx_controller_db_port: "5432"
 nginx_controller_db_user: ""

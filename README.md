@@ -49,42 +49,49 @@ Ubuntu:
 
 | Variable | Default | Description | Required |
 | -------- | ------- | ----------- | -------- |
-| `nginx_controller_tarball` | `""` | Source path to the Controller tarball file on the remote host | Yes |
-| `nginx_controller_install_path` | `""` | Path where the tarball is extracted on the remote host | Yes |
-| `nginx_controller_remote_source` | `"true"` | If the tarball file exists on the remote machine | No |
-| `nginx_controller_db_host` | `""` | PostgreSQL database host ip address or FQDN, unnecessary when using bundled_db | No |
-| `nginx_controller_db_port` | `"5432"` | PostgreSQL database port, unnecessary when using bundled_db | No |
-| `nginx_controller_db_user` | `""` | PostgreSQL database user, unnecessary when using bundled_db | No |
-| `nginx_controller_db_password` | `""` | PostgreSQL database password, unnecessary when using bundled_db | No |
-| `nginx_controller_apigw_cert` | `""` | SSL/TLS cert file path, cannot be used together with self_signed_cert: true | No |
-| `nginx_controller_apigw_key` | `""` | SSL/TLS key file path, cannot be used together with self_signed_cert: true | No |
-| `nginx_controller_tsdb_volume_type` | `""` | Backing volume for time series database. (local, nfs or aws) | Yes |
-| `nginx_controller_tsdb_nfs_path` | `""` | Time series database NFS path (only if `tsdb_volume_type` is `nfs`) | No |
-| `nginx_controller_tsdb_nfs_host` | `""` | Time series database NFS host (only if `tsdb_volume_type` is `nfs`) | No |
-| `nginx_controller_tsdb_aws_volume_id` | `""` | Time series database AWS EBS Volume ID (only if `tsdb_volume_type` is `aws`) | No |
-| `nginx_controller_configdb_volume_type` | `""` | Backing volume for config database. (local, nfs or aws) | No |
-| `nginx_controller_configdb_nfs_path` | `""` | Config database NFS path (only if `configdb_volume_type` is `nfs`) | No |
-| `nginx_controller_configdb_nfs_host` | `""` | Config database NFS host (only if `configdb_volume_type` is `nfs`) | No |
-| `nginx_controller_configdb_aws_volume_id` | `""` | Config database AWS EBS Volume ID (only if `configdb_volume_type` is `aws`) | No |
-| `nginx_controller_smtp_host` | `""` | SMTP Host for emails | Yes |
-| `nginx_controller_smtp_port` | `"25"` | SMTP Port for emails | No |
-| `nginx_controller_smtp_authentication` | `""` | Specify if SMTP needs auth (true or false) | Yes |
-| `nginx_controller_smtp_user` | `""` | SMTP user (only provide if `smtp_authentication` is true) | No |
-| `nginx_controller_smtp_password` | `""` | SMTP password (only provide if `smtp_authentication` is true) | No |
-| `nginx_controller_smtp_use_tls` | `false` | Specify if SMTP should use https (true or false) | No |
-| `nginx_controller_noreply_address` | `""` | Specify the email to show in the 'FROM' field of controller emails | Yes |
-| `nginx_controller_fqdn` | `""` | FQDN for the controller web frontend and agent communication. For example, controller.example.com. This domain name must not exceed 64 characters. | Yes |
+| `nginx_controller_tarball` | `""` | Source path to the NGINX Controller tarball | Yes |
+| `nginx_controller_remote_source` | `"true"` | If the NGINX Controller tarball is already present remote host | No |
+| `nginx_controller_install_path` | `""` | The path where the NGINX Controller tarball will be extracted on the remote host | Yes |
+| `nginx_controller_bundled_db` | `true` | Specify if NGINX Controller should use a bundled PostgreSQL database (versions >=3.8) -- mutually exclusive with all other database variables | No |
+| `nginx_controller_db_host` | `""` | External PostgreSQL database IP address or FQDN | No |
+| `nginx_controller_db_port` | `"5432"` | External PostgreSQL database port | No |
+| `nginx_controller_db_user` | `""` | External PostgreSQL database user | No |
+| `nginx_controller_db_password` | `""` | External PostgreSQL database password | No |
+| `nginx_controller_db_enable_ssl` | `""` | Use SSL to connect to the external PostgreSQL database | No |
+| `nginx_controller_db_ca` | `""` | Path to the CA certificate file to use for SSL connection to the external PostgreSQL database | No |
+| `nginx_controller_db_client_cert` | `""` | Path to the client certificate file to use for SSL connection to the external PostgreSQL database | No |
+| `nginx_controller_db_client_key` | `""` | Path to the key file to use for SSL connection to the external PostgreSQL database | No |
+
+| `nginx_controller_self_signed_cert` | `false` | Specify if the NGINX Controller installation process should create a self signed cert/key for SSL -- mutually exclusive with `*_apigw_*` variables | No |
+| `nginx_controller_apigw_cert` | `""` | Path to the NGINX Controller SSL certificate | No |
+| `nginx_controller_apigw_key` | `""` | Path to the NGINX Controller SSL key | No |
+
+| `nginx_controller_tsdb_volume_type` | `""` | Time series database volume type (local, nfs, aws) -- resiliency support requires remote volume | Yes |
+| `nginx_controller_tsdb_nfs_path` | `""` | Time series database NFS path (if `tsdb_volume_type` is `nfs`) | No |
+| `nginx_controller_tsdb_nfs_host` | `""` | Time series database NFS host (if `tsdb_volume_type` is `nfs`) | No |
+| `nginx_controller_tsdb_aws_volume_id` | `""` | Time series database AWS EBS Volume ID (if `tsdb_volume_type` is `aws`) | No |
+| `nginx_controller_configdb_volume_type` | `""` | Config database backing volume type (local, nfs or aws) -- resiliency support requires remote volume | No |
+| `nginx_controller_configdb_nfs_path` | `""` | Config database NFS path (if `configdb_volume_type` is `nfs`) | No |
+| `nginx_controller_configdb_nfs_host` | `""` | Config database NFS host (if `configdb_volume_type` is `nfs`) | No |
+| `nginx_controller_configdb_aws_volume_id` | `""` | Config database AWS EBS Volume ID (if `configdb_volume_type` is `aws`) | No |
+
+| `nginx_controller_smtp_host` | `""` | SMTP host | Yes |
+| `nginx_controller_smtp_port` | `"25"` | SMTP port | No |
+| `nginx_controller_smtp_authentication` | `""` | Specify if SMTP needs authentication credentials | Yes |
+| `nginx_controller_smtp_user` | `""` | SMTP user | No |
+| `nginx_controller_smtp_password` | `""` | SMTP password| No |
+| `nginx_controller_smtp_use_tls` | `false` | Specify if SMTP should connect via HTTPS | No |
+| `nginx_controller_noreply_address` | `""` | Address to show in the 'FROM' field of NGINX Controller emails | Yes |
+
+| `nginx_controller_fqdn` | `""` | FQDN for the NGINX Controller web frontend (e.g.: controller.example.com) | Yes |
 | `nginx_controller_organization_name` | `""` | The organization name | Yes |
 | `nginx_controller_admin_firstname` | `""` | Admin user first name | Yes |
 | `nginx_controller_admin_lastname` | `""` | Admin user last name | Yes |
 | `nginx_controller_admin_email` | `""` | Admin user email | Yes |
 | `nginx_controller_admin_password` | `""` | Admin user password | Yes |
-| `nginx_controller_self_signed_cert` | `false` | Specify if the installation should create a self signed cert for TLS (true or false) | No |
-| `nginx_controller_overwrite_existing_configs` | `false` | Specify if the existing config for controller should be overwritten (true or false) | No |
-| `nginx_controller_auto_install_docker` | `false` | Specify if docker needs to be installed as part of the installation process (true or false) | No |
-| `nginx_controller_bundled_db` | `false` | Specify if the installation process should use a bundled database (version >=3.8) | No |
 
-> _Note_ `nginx_controller_configdb_*` options are for use with the `nginx_controller_bundled_db`, and are mutually exclusive with the `nginx_controller_db_` parameters.
+| `nginx_controller_overwrite_existing_configs` | `false` | Specify if any existing configs for NGINX Controller should be overwritten during installation | No |
+| `nginx_controller_auto_install_docker` | `false` | Specify if Docker needs to be installed as part of the installation process. | No |
 
 ## Example Playbook
 

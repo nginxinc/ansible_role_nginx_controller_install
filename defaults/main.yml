@@ -1,83 +1,91 @@
 ---
-## Required.
-# Source path to the local Controller tarball file.
+# Unless otherwise noted, all variables are optional.
+
+# NGINX Controller installation settings.
+# Required -- Source path to the NGINX Controller tarball.
 # nginx_controller_tarball: ""
-## required. The path where the tarball will be extracted to on the remote
-# nginx_controller_install_path: ""
-## Optional. If the tarball is already present on the remote host.
+# If the NGINX Controller tarball is already present on the remote host.
 # nginx_controller_remote_source: yes
-#
-## Controller installation parameters
-#
-## Optional. Use a bundled PostgreSQL database. Not recommended for production systems.
-# nginx_controller_bundled_db: false
-## Optional. Database host. Required if nginx_controller_bundled_db=false.
+# Required -- The path where the NGINX Controller tarball will be extracted on the remote host.
+# nginx_controller_install_path: ""
+
+# NGINX Controller installation parameters.
+# Specify if NGINX Controller should use a bundled PostgreSQL database (versions >=3.8) -- mutually exclusive with all other database variables.
+# nginx_controller_bundled_db: true
+# External PostgreSQL database IP address or FQDN.
 # nginx_controller_db_host: ""
-## Optional. Database port
+# External PostgreSQL database port.
 # nginx_controller_db_port: "5432"
-## Optional. Database user. Required if nginx_controller_bundled_db=false.
+# External PostgreSQL database user.
 # nginx_controller_db_user: ""
-## Optional. Database password. Required if nginx_controller_bundled_db=false.
+# External PostgreSQL database password.
 # nginx_controller_db_password: ""
-## Optional. Enable database ssl communications. Requires certificate installation at db server and controller. (true, false)
+# Use SSL to connect to the external PostgreSQL database.
 # nginx_controller_db_enable_ssl: true
-## Optional. Required if nginx_controller_db_enable_ssl=true. Path to the CA certificate file to use for SSL connection to the database
+# Path to the CA certificate file to use for SSL connection to the external PostgreSQL database.
 # nginx_controller_db_ca: ""
-## Optional. Required if nginx_controller_db_enable_ssl=true. Path to the client certificate file to use for SSL connection to the database
+# Path to the client certificate file to use for SSL connection to the external PostgreSQL database.
 # nginx_controller_db_client_cert: ""
-## Optional. Required if nginx_controller_db_enable_ssl=true. Path to the key file to use for SSL connection to the database
+# Path to the key file to use for SSL connection to the external PostgreSQL database.
 # nginx_controller_db_client_key: ""
 
-## Optional. Custom certificate for Controller. SSL/TLS cert file path, cannot be used together with self_signed_cert: true
-# nginx_controller_apigw_cert: ""
-## Optional. SSL/TLS key file path, cannot be used together with self_signed_cert: true
-# nginx_controller_apigw_key: ""
-#
-## Required. Time series database volume type (local, nfs, aws)  Resiliency support requires remote volume.
-# nginx_controller_tsdb_volume_type: "local"
-## Optional. Time series database NFS path (only if tsdb_volume_type is 'nfs')
-# nginx_controller_tsdb_nfs_path: ""
-## Optional. Time series database NFS host (only if tsdb_volume_type is 'nfs')
-# nginx_controller_tsdb_nfs_host: ""
-## Optional. Time series database AWS EBS Volume ID (only if tsdb_volume_type is 'aws')
-# nginx_controller_tsdb_aws_volume_id: ""
-#
-## Required. SMTP Host
-# nginx_controller_smtp_host: ""
-## Optional. SMTP Port
-# nginx_controller_smtp_port: "25"
-## Required. Specify if SMTP needs auth (user and pass)
-# nginx_controller_smtp_authentication: false
-## Optional. SMTP user (only if smtp_authentication is true)
-# nginx_controller_smtp_user: ""
-## Optional. SMTP password (only if smtp_authentication is true)
-# nginx_controller_smtp_password: ""
-## Required. Specify if SMTP should use TLS
-# nginx_controller_smtp_use_tls: false
-#
-## Required. Specify the email to show in the 'FROM' field.
-# nginx_controller_noreply_address: ""
-## Required. FQDN (domain) for the controller web frontend, for example, controller.example.com
-# nginx_controller_fqdn: ""
-## Required. Organization Name
-# nginx_controller_organization_name: ""
-#
-## Required. Admin user first name
-# nginx_controller_admin_firstname: ""
-## Required. Admin user last name
-# nginx_controller_admin_lastname: ""
-## Required. Admin user email
-# nginx_controller_admin_email: ""
-## Required. Admin user password
-# nginx_controller_admin_password: ""
-#
-## Optional. Specify if the installation process should create a self signed cert for TLS
+# Specify if the NGINX Controller installation process should create a self signed cert/key for SSL -- mutually exclusive with `*_apigw_*` variables.
 # nginx_controller_self_signed_cert: false
-## Optional. Specify if the existing config for controller should be overwritten
+# Path to the NGINX Controller SSL certificate.
+# nginx_controller_apigw_cert: ""
+# Path to the NGINX Controller SSL key.
+# nginx_controller_apigw_key: ""
+
+# Required -- Time series database volume type (local, nfs, aws) -- resiliency support requires remote volume.
+# nginx_controller_tsdb_volume_type: "local"
+# Time series database NFS path (if `tsdb_volume_type` is `nfs`).
+# nginx_controller_tsdb_nfs_path: ""
+# Time series database NFS host (if `tsdb_volume_type` is `nfs`).
+# nginx_controller_tsdb_nfs_host: ""
+# Time series database AWS EBS Volume ID (if `tsdb_volume_type` is `aws`).
+# nginx_controller_tsdb_aws_volume_id: ""
+# Config database backing volume type (local, nfs or aws) -- resiliency support requires remote volume.
+# nginx_controller_configdb_volume_type
+# Config database NFS path (if `configdb_volume_type` is `nfs`).
+# nginx_controller_configdb_nfs_path
+# Config database NFS host (if `configdb_volume_type` is `nfs`).
+# nginx_controller_configdb_nfs_host
+# Config database AWS EBS Volume ID (if `configdb_volume_type` is `aws`)
+# nginx_controller_configdb_aws_volume_id
+
+# Required -- SMTP host.
+# nginx_controller_smtp_host: ""
+# SMTP port.
+# nginx_controller_smtp_port: "25"
+# Required -- Specify if SMTP needs authentication credentials.
+# nginx_controller_smtp_authentication: false
+# SMTP user.
+# nginx_controller_smtp_user: ""
+# SMTP password.
+# nginx_controller_smtp_password: ""
+# Specify if SMTP should connect via HTTPS.
+# nginx_controller_smtp_use_tls: false
+# Required -- Address to show in the 'FROM' field of NGINX Controller emails.
+# nginx_controller_noreply_address: ""
+
+# Required -- FQDN for the NGINX Controller web frontend (e.g.: controller.example.com).
+# nginx_controller_fqdn: ""
+
+# Required -- The organization name.
+# nginx_controller_organization_name: ""
+# Required -- Admin user first name.
+# nginx_controller_admin_firstname: ""
+# Required -- Admin user last name.
+# nginx_controller_admin_lastname: ""
+# Required -- Admin user email.
+# nginx_controller_admin_email: ""
+# Required -- Admin user password.
+# nginx_controller_admin_password: ""
+
+
+# Specify if any existing configs for NGINX Controller should be overwritten during installation.
 # nginx_controller_overwrite_existing_configs: false
-## Optional. Specify if docker needs to be installed as part of the installation process
+# Specify if Docker needs to be installed as part of the installation process.
 # nginx_controller_auto_install_docker: false
-## Optional. Specify if the installation process should use a bundled database (version >=3.8)
-# nginx_controller_bundled_db: false
-#
+
 ## note: optional variables must not be provided as blank strings, which is why they are commented out.
