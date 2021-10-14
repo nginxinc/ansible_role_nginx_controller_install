@@ -1,27 +1,30 @@
 ---
 - name: Converge
-  hosts: controllers
+  hosts: all
   tasks:
-    - name: Call Controller Install Role
+    - name: Install NGINX Controller
       include_role:
-        name: ansible-role-nginx-controller-install
+        name: ansible_role_nginx_controller_install
       vars:
-        nginx_controller_fqdn: "controller.test.com"
-        nginx_controller_tarball: "/home/controller-installer.tar.gz"
-        nginx_controller_remote_source: true
-        nginx_controller_bundled_db: true
+        nginx_controller_tarball: controller-installer-mock.tar.gz
         nginx_controller_install_path: /home
-        nginx_controller_tsdb_volume_type: "local"
-        nginx_controller_smtp_host: "localhost"
-        nginx_controller_smtp_port: "25"
-        nginx_controller_smtp_authentication: false
-        nginx_controller_smtp_use_tls: false
-        nginx_controller_noreply_address: "noreply@test.com"
-        nginx_controller_organization_name: "Test Corp"
-        nginx_controller_admin_firstname: "David"
-        nginx_controller_admin_lastname: "McAdmin"
-        nginx_controller_admin_email: "test@test.com"
-        nginx_controller_admin_password: "thisismypassword"
-        nginx_controller_self_signed_cert: true
+        nginx_controller_remote_source: false
+
         nginx_controller_overwrite_existing_configs: true
         nginx_controller_auto_install_docker: false
+        nginx_controller_bundled_db: true
+        nginx_controller_tsdb_volume_type: local
+
+        nginx_controller_smtp_host: localhost
+        nginx_controller_smtp_port: 25
+        nginx_controller_smtp_authentication: false
+        nginx_controller_smtp_use_tls: false
+
+        nginx_controller_fqdn: controller.example.com
+        nginx_controller_noreply_address: noreply@example.com
+        nginx_controller_organization_name: Molecule Org
+        nginx_controller_admin_firstname: John
+        nginx_controller_admin_lastname: Doe
+        nginx_controller_admin_email: john.doe@example.com
+        nginx_controller_admin_password: thisismypassword
+        nginx_controller_self_signed_cert: true

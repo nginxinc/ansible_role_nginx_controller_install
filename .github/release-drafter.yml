@@ -88,12 +88,12 @@ template: |
 
   ## Install & Upgrade
 
-  *   To install the Ansible NGINX Controller Install role on a fresh environment, run `ansible-galaxy install nginxinc.nginx_controller_install`.
-  *   To upgrade the Ansible NGINX Controller Install role to the latest release, run `ansible-galaxy install -f nginxinc.nginx_controller_install`.
-  *   To install or upgrade to this specific Ansible NGINX Controller Install role release ($RESOLVED_VERSION), run `ansible-galaxy install -f nginxinc.nginx_controller_install,v$RESOLVED_VERSION`.
+  * To install the Ansible NGINX Controller Install role on a fresh environment, run `ansible-galaxy install nginxinc.nginx_controller_install`.
+  * To upgrade the Ansible NGINX Controller Install role to the latest release, run `ansible-galaxy install -f nginxinc.nginx_controller_install`.
+  * To install or upgrade to this specific Ansible NGINX Controller Install role release ($RESOLVED_VERSION), run `ansible-galaxy install -f nginxinc.nginx_controller_install,v$RESOLVED_VERSION`.
 
   ## Resources
 
-  *   Functional configuration examples (check `converge.yml` under each `molecule` scenario) -- [github.com/nginxinc/ansible-role-nginx-controller-install/tree/$RESOLVED_VERSION/molecule](https://github.com/nginxinc/ansible-role-nginx-controller-install/tree/$RESOLVED_VERSION/molecule).
-  *   Ansible Galaxy repository -- [galaxy.ansible.com/nginxinc/nginx_controller_install](https://galaxy.ansible.com/nginxinc/nginx_controller_install).
-  *   NGINX: Better with Ansible demo -- [github.com/alessfg/nginx-ansible-demo](https://github.com/alessfg/nginx-ansible-demo).
+  * Functional configuration examples (check `converge.yml` under each `molecule` scenario) -- [github.com/nginxinc/ansible_role_nginx_controller_install/tree/$RESOLVED_VERSION/molecule](https://github.com/nginxinc/ansible_role_nginx_controller_install/tree/$RESOLVED_VERSION/molecule).
+  * Ansible Galaxy repository -- [galaxy.ansible.com/nginxinc/nginx_controller_install](https://galaxy.ansible.com/nginxinc/nginx_controller_install).
+  * NGINX: Better with Ansible demo -- [github.com/alessfg/nginx-ansible-demo](https://github.com/alessfg/nginx-ansible-demo).
