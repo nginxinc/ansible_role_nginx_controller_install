@@ -6,6 +6,10 @@ ENHANCEMENTS:
 
 Update the Ansible `community.docker` collection to `2.0.0`.
 
+BUG FIXES:
+
+Logic was unintentionally reversed in bundled DB condition ternary (issue #39).
+
 ## 0.1.0 (October 14, 2021)
 
 FEATURES:
