@@ -83,8 +83,8 @@
       {{ (nginx_controller_self_signed_cert | bool) | ternary('--self-signed-cert', '') }} \
       {{ (nginx_controller_overwrite_existing_configs | bool) | ternary('--overwrite-existing-configs', '') }} \
       {{ (nginx_controller_auto_install_docker | bool) | ternary('--auto-install-docker', '') }} \
-      {{ ((nginx_controller_bundled_db | bool) and (nginx_controller_version is version('3.8', operator='ge', strict=True))) | ternary("--database-host '" + nginx_controller_db_host + "' --database-port '" + nginx_controller_db_port + "' --database-user '" + nginx_controller_db_user + "' --database-password '" + nginx_controller_db_password + "'", "--use-bundled-db") }} \
-      {{ ((nginx_controller_db_enable_ssl | bool) and ( not nginx_controller_bundled_db )) | ternary('--db-enable-ssl true', '') }} \
+      {{ ((nginx_controller_bundled_db | bool) and (nginx_controller_version is version('3.8', operator='ge', strict=True))) | ternary("--use-bundled-db", "--database-host '" + nginx_controller_db_host + "' --database-port '" + nginx_controller_db_port + "' --database-user '" + nginx_controller_db_user + "' --database-password '" + nginx_controller_db_password + "'") }} \
+      {{ ((nginx_controller_db_enable_ssl | bool) and (not nginx_controller_bundled_db)) | ternary('--db-enable-ssl true', '') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_cert | length > 0)) | ternary("--db-client-cert '" + nginx_controller_db_client_cert + "'", '') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_client_key | length > 0)) | ternary("--db-client-key '" + nginx_controller_db_client_key + "'", '') }} \
       {{ ((nginx_controller_db_enable_ssl | bool) and (nginx_controller_db_ca | length > 0)) | ternary("--db-ca '" + nginx_controller_db_ca + "'", '') }} \
