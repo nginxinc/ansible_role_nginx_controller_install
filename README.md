@@ -1,5 +1,7 @@
 # Ansible NGINX Controller Installation Role
 
+# This repository has been archived. There will likely be no further development on the project and security vulnerabilities may be unaddressed.
+
 This role installs [NGINX Controller](https://www.nginx.com/products/nginx-controller/) on your target host.
 
 ## Requirements
